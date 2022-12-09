@@ -68,7 +68,7 @@ public class FirstComeFirstServe {
 	}
 	public void print(Process process[],double avgT,double avgW)
 	{
-		System.out.println("\npid  arrival  burst  complete turn waiting");
+		System.out.println("\npid  arrival  burst  complete turn  waiting");
 		for(int i=0;i<process.length;i++)
 		{
 			System.out.println(process[i].getProcessID()+" \t "+process[i].getArrivalTime()+" \t"+process[i].getBurstTime()+" \t"+process[i].getCompletionTime()+
