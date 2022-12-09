@@ -1,4 +1,4 @@
-package os2;
+package schedulers;
 
 import java.util.Scanner;
 
@@ -48,8 +48,8 @@ public class main {
 			}*/
 			break;
 		case "2":
-			ShortestJobFirst SJF=new ShortestJobFirst();
-			SJF.sjf(process);
+			//ShortestJobFirst SJF=new ShortestJobFirst();
+			//SJF.sjf(process);
 			break;
 			
 			
