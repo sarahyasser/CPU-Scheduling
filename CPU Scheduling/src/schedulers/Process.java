@@ -1,29 +1,32 @@
 package schedulers;
 
 public class Process {
-    int processID;
-    int arrivalTime;
-    int burstTime; //executionTime
-    int waitingTime;
-    int completionTime;
-    int turnAroundTime;
-    int tempBurstTime;
+    String processID;
+    public int arrivalTime;
+    public int burstTime; //executionTime
+    public int waitingTime;
+    public int completionTime;
+    public int turnAroundTime;
+    public int tempBurstTime;
     static int counter=0;
+    public int remainingBurstTime;
+    public int t;
+	int priority;
     
     Process(int processID,int arrivalTime,int burstTime )
     {
-    	this.processID=processID;
+    	this.processID="p"+processID;
     	this.arrivalTime=arrivalTime;
     	this.burstTime=burstTime;
     	this.tempBurstTime=burstTime;
         counter++;
     	
     }
-    public int getProcessID() {
+    public String getProcessID() {
 		return processID;
 	}
 
-	public void setProcessID(int processID) {
+	public void setProcessID(String processID) {
 		this.processID = processID;
 	}
 
@@ -76,6 +79,12 @@ public class Process {
 	}
 	public void setTempBurstTime(int tempBurstTime) {
 		this.tempBurstTime = tempBurstTime;
+	}
+    public int getPriority() {
+		return priority;
+	}
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 
 
