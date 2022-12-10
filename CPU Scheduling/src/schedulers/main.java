@@ -2,6 +2,8 @@ package schedulers;
 
 import java.util.Scanner;
 
+
+
 //import Process.Process;
 
 public class main {
@@ -50,8 +52,13 @@ public class main {
 			}*/
 			break;
 		case "2":
-			//ShortestJobFirst SJF=new ShortestJobFirst();
-			//SJF.sjf(process);
+			int contextTime;
+			System.out.println("Enter the context time");
+		    contextTime=scan.nextInt();
+			ShortestJobFirst SJF=new ShortestJobFirst(contextTime);
+			SJF.completionTime(process);
+			SJF.calculations(process);
+
 			break;
 			
 		case "3":
