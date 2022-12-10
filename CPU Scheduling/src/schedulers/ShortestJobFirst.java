@@ -1,14 +1,15 @@
 package schedulers;
 
+import java.util.ArrayList;
+
 //import trial.Process;
 
 public class ShortestJobFirst 
 {
-	
-	
 	double avgT;
 	double avgW;
 	int contextTime;
+	ArrayList<String> gantt=new ArrayList<String>();
 	
 	public ShortestJobFirst(int contextTime) {
 		// TODO Auto-generated constructor stub
@@ -16,65 +17,46 @@ public class ShortestJobFirst
 	}
 
 	void findWaitingTime(Process process[])
-{
+	{
 		for(int i=0;i<process.length;i++)
 		{
-			process[i].tempBurstTime=process[i].burstTime;
+			process[i].remainingBurstTime=process[i].burstTime;
 		}
-		int completedProcesses = 0, timer = 0, min = Integer.MAX_VALUE;
-		int shortest = 0, finish_time;
+		int completedProcesses = 0;
+		int timer = 0;
+		int min = Integer.MAX_VALUE;
+		int shortest = 0;
+		int finish_time;
 		
-		//boolean check = false;
 		while(completedProcesses<process.length)
 		{
-			// Find process with minimum
-			// remaining time among the
-			// processes that arrives till the
-			// current time`
+			//find the process with the minimum remaining time
 			for (int i = 0; i < process.length; i++)
 			{
-				if ((process[i].arrivalTime <= timer) &&(process[i].tempBurstTime < min) && process[i].tempBurstTime > 0) {
-					min = process[i].tempBurstTime;
+				if ((process[i].arrivalTime <= timer) &&(process[i].remainingBurstTime < min) && process[i].remainingBurstTime > 0) {
+					min = process[i].remainingBurstTime;
 					shortest = i;
 					
 				}
 			}
-			System.out.print((shortest+1)+" ");
-			
-			
+			gantt.add(process[shortest].getProcessID());//adding this process to gantt chart
+
+			process[shortest].remainingBurstTime--;//decrementing the remaining burst time of the current process
+			min = process[shortest].remainingBurstTime;
 	
-		
-			// Reduce remaining time by one
-			//rt[shortest]--;
-			process[shortest].tempBurstTime--;
-	
-			// Update minimum
-			min = process[shortest].tempBurstTime;
-		//	if (min == 0)
-			//	min = Integer.MAX_VALUE;
-			// If a process gets completely
-			// executed
-			if (process[shortest].tempBurstTime == 0)
+			if (process[shortest].remainingBurstTime == 0)//if the current process is executed
 			
 			{
 				min = Integer.MAX_VALUE;
-				// Increment complete
-				completedProcesses++;
-				//check = false;
-	
-				// Find finish time of current
-				// process
+				completedProcesses++;//incrementing the completed processes
 				finish_time = timer + 1;
 				process[shortest].completionTime=finish_time;
-	
-				// Calculate waiting time
-		
 					
 			}
-			// Increment time
 			timer++;
 			timer+=contextTime;
 		}
+		calculations(process);
 		}
 	
 	public void calculations(Process process[])
@@ -92,6 +74,7 @@ public class ShortestJobFirst
 	
 		public void print(Process process[])
 		{
+			System.out.println(gantt);
 			System.out.println("\npid  arrival  burst  complete turn  waiting");
 			for(int i=0;i<process.length;i++)
 			{
@@ -104,56 +87,5 @@ public class ShortestJobFirst
 		}
 }
 
-public class ShortestJobFirst {
-    
-    public void sjf(Process process [])
-    {
-        
-       int completedProcesses=0;
-       Process curProcess;
-       curProcess=process[0];
-       int curTimeInterval=0; //current time interval of the current executing process
-      while (completedProcesses<process.length)
-      {
-          for(int i=0;i<process.length;i++)
-            { 
-              if(process[i].getTempBurstTime()>0) //lw el burst time bta3 el process de akbar mn zero y3ny lesa mkhlsh
-            {
-                curProcess=process[i];//fa el current process hye de
-          break;
-          }
-              
-          }
-          for(int i=0;i<process.length;i++)
-          {
-            
-            if(process[i].getArrivalTime()>curTimeInterval||process[i].getTempBurstTime()==0)
-            {
-                continue;
-            }
-            if(process[i].getCompletionTime()<curProcess.getCompletionTime())
-            {
-                curProcess=process[i];
-            }
-          }
-         //curProcess.getTempBurstTime()= curProcess.getTempBurstTime()-1;
-        curProcess.tempBurstTime-=1;
-        if(curProcess.getTempBurstTime()==0)
-        {
-            completedProcesses++;
-            curProcess.completionTime=curTimeInterval+1;
-            
-        }
-        curTimeInterval++;
-      }
-      for(int i=0;i<process.length;i++)
-      {
-          process[i].setWaitingTime((process[i].getCompletionTime())-(process[i].getBurstTime())-(process[i].getArrivalTime()));
-          process[i].setTurnAroundTime((process[i].getWaitingTime())-(process[i].getBurstTime()));
-          System.out.println(process[i]);
-      }
-    }
-     
 
-}
 

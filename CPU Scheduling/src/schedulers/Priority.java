@@ -89,8 +89,8 @@ public class Priority {
 			if(time >=executing.getArrivalTime())
 			{
 				sequence.add(executing);
-				executing.setTempBurstTime(executing.getTempBurstTime()-1);
-				if(executing.getTempBurstTime()==0)
+				executing.remainingBurstTime=executing.remainingBurstTime-1;
+				if(executing.remainingBurstTime==0)
 				{
 					completed.add(processList.get(index));
 					processList.remove(index);

@@ -50,7 +50,10 @@ public class main {
 			}*/
 			break;
 		case "2":
-			//ShortestJobFirst SJF=new ShortestJobFirst();
+			System.out.println("Enter the context time:");
+			int c=scan.nextInt();
+			ShortestJobFirst SJF=new ShortestJobFirst(c);
+			SJF.findWaitingTime(process);
 			//SJF.sjf(process);
 			break;
 			

@@ -67,7 +67,7 @@ public class RoundRobin {
 			
 			
 			Process p=ready.remove(0);//get process from ready queue
-			System.out.print(p.getProcessID()+"  ");
+			ganttChart.add(p.getProcessID());
 			int counter=0;
 			while((counter<quantum)&& p.remainingBurstTime>0)
 			{
@@ -120,6 +120,7 @@ public class RoundRobin {
 	
 	public void print()
 	{
+		System.out.println(ganttChart);
 		System.out.println("\npid  arrival  burst  completion  turn  waiting");
 		for(int i=0;i<process.length;i++)
 		{

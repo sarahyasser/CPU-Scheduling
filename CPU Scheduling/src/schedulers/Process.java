@@ -7,7 +7,7 @@ public class Process {
     public int waitingTime;
     public int completionTime;
     public int turnAroundTime;
-    public int tempBurstTime;
+   // public int tempBurstTime;
     static int counter=0;
     public int remainingBurstTime;
     public int t;
@@ -18,7 +18,7 @@ public class Process {
     	this.processID="p"+processID;
     	this.arrivalTime=arrivalTime;
     	this.burstTime=burstTime;
-    	this.tempBurstTime=burstTime;
+    	//this.tempBurstTime=burstTime;
         counter++;
     	
     }
@@ -74,12 +74,6 @@ public class Process {
 	        return "\nProcess"+processID+"{" + "\n\tprocessID=" + processID + "\n\tarrivalTime=" + arrivalTime
 	                + "\n\tburstTime=" + burstTime + "\n\tCompletion time=" + completionTime+"\n\twaitingTime=" + waitingTime + "\n\tturnaroundTime=" + turnAroundTime + "\n}";
 	    }
-	public int getTempBurstTime() {
-		return tempBurstTime;
-	}
-	public void setTempBurstTime(int tempBurstTime) {
-		this.tempBurstTime = tempBurstTime;
-	}
     public int getPriority() {
 		return priority;
 	}
