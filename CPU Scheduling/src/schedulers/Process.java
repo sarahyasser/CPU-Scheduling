@@ -7,18 +7,19 @@ public class Process {
     public int waitingTime;
     public int completionTime;
     public int turnAroundTime;
-   // public int tempBurstTime;
     static int counter=0;
     public int remainingBurstTime;
+    public int remainingQuantumTime;
+
     public int t;
 	int priority;
+	int quantumTime;
     
     Process(int processID,int arrivalTime,int burstTime )
     {
     	this.processID="p"+processID;
     	this.arrivalTime=arrivalTime;
     	this.burstTime=burstTime;
-    	//this.tempBurstTime=burstTime;
         counter++;
     	
     }

@@ -36,12 +36,12 @@ public class ShortestJobFirst
 			//find the process with the minimum remaining time
 			for (int i = 0; i < process.length; i++)
 			{
-				if ((process[i].arrivalTime <= timer) &&(process[i].remainingBurstTime < min) && process[i].remainingBurstTime > 0) {
+				if ((process[i].arrivalTime <= timer) &&(process[i].remainingBurstTime < min) && process[i].remainingBurstTime > 0) 
+				{
 					min = process[i].remainingBurstTime;
 					shortest = i;
 					found=true;
-					counter++;
-					
+					counter++;					
 				}
 			}
 			gantt.add(process[shortest].getProcessID());//adding this process to gantt chart
