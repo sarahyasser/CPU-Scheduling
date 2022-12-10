@@ -27,6 +27,9 @@ public class ShortestJobFirst
 		int min = Integer.MAX_VALUE;
 		int shortest = 0;
 		int finish_time;
+		int counter=0;
+		Process temp;
+		boolean found = false;
 		
 		while(completedProcesses<process.length)
 		{
@@ -36,6 +39,8 @@ public class ShortestJobFirst
 				if ((process[i].arrivalTime <= timer) &&(process[i].remainingBurstTime < min) && process[i].remainingBurstTime > 0) {
 					min = process[i].remainingBurstTime;
 					shortest = i;
+					found=true;
+					counter++;
 					
 				}
 			}
@@ -53,8 +58,15 @@ public class ShortestJobFirst
 				process[shortest].completionTime=finish_time;
 					
 			}
-			timer++;
-			timer+=contextTime;
+			if(counter==1)
+				{timer++;}
+			else{
+				timer++;
+				if(found)//if context switch happened 
+					timer+=contextTime;
+				
+			}
+			found=false;
 		}
 		calculations(process);
 		}
