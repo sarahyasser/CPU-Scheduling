@@ -30,7 +30,8 @@ public class main {
 		System.out.println("Choose the type of scheduler you want to use");
 		System.out.println("1-FCFS");
 		System.out.println("2-SJF");
-		System.out.println("3-EXIT");
+		System.out.println("3-RR");
+		System.out.println("4-EXIT");
 		System.out.println("* * * * * * * * * * * * * * * * * * ");
 		
 		System.out.println("Enter your choice: ");
@@ -51,6 +52,13 @@ public class main {
 			//ShortestJobFirst SJF=new ShortestJobFirst();
 			//SJF.sjf(process);
 			break;
+			
+		case "3":
+			System.out.println("Enter the quantum time:");
+			int quantum=scan.nextInt();
+			System.out.println("Enter the context time:");
+			int context=scan.nextInt();
+			RoundRobin rr=new RoundRobin(quantum,process,context);		
 			
 			
 			
