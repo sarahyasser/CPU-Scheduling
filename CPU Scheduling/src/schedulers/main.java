@@ -23,7 +23,7 @@ public class main {
 		
 		}
 		String choice="";
-		while (!choice.equals("4"))               // Main menu
+		while (!choice.equals("6"))               // Main menu
 		{
 			System.out.println("* * * * * * * * * * * * * * * * * * ");
 		
@@ -31,7 +31,8 @@ public class main {
 		System.out.println("1-FCFS");
 		System.out.println("2-SJF");
 		System.out.println("3-RR");
-		System.out.println("4-EXIT");
+		System.out.println("4-Priority (With Aging)");
+		System.out.println("5-EXIT");
 		System.out.println("* * * * * * * * * * * * * * * * * * ");
 		
 		System.out.println("Enter your choice: ");
@@ -59,7 +60,16 @@ public class main {
 			System.out.println("Enter the context time:");
 			int context=scan.nextInt();
 			RoundRobin rr=new RoundRobin(quantum,process,context);		
-			
+			break;
+		
+		case "4":
+			for (int i = 0; i < process.length; i++) {
+				System.out.println("Enter process " + (i+1) + "'s Priority: ");
+				int priority = scan.nextInt();
+				process[i].setPriority(priority);
+			}
+			Priority pr= new Priority();
+			pr.sortProcessWithAging(process, num);
 			
 			
 		}

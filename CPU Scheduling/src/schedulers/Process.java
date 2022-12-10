@@ -11,6 +11,7 @@ public class Process {
     static int counter=0;
     public int remainingBurstTime;
     public int t;
+	int priority;
     
     Process(int processID,int arrivalTime,int burstTime )
     {
@@ -78,6 +79,12 @@ public class Process {
 	}
 	public void setTempBurstTime(int tempBurstTime) {
 		this.tempBurstTime = tempBurstTime;
+	}
+    public int getPriority() {
+		return priority;
+	}
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 
 
