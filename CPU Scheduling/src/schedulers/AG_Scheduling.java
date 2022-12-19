@@ -171,7 +171,7 @@ public class AG_Scheduling
 
     }
     
-    public void completeProcess() //if a running process didn’t use all of its quantum time because it’s no longer need that time and the job was completed
+    public void completeProcess() //if a running process didnâ€™t use all of its quantum time because itâ€™s no longer need that time and the job was completed
     {
     	currentProcess.quantumTime=0;
         currentProcess.remainingQuantumTime=0;
