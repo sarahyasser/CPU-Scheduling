@@ -2,11 +2,6 @@ package schedulers;
 
 public class FirstComeFirstServe {
 
-	//Process process;
-	/*FirstComeFirstServe(Process process)
-	{
-		this.process=process;
-	}*/
 	public void sortProcesses(Process process[])
 	{   
 		Process temp; //to swap
@@ -41,16 +36,9 @@ public class FirstComeFirstServe {
 				process[i].setCompletionTime(process[i-1].getCompletionTime()+process[i].getBurstTime());
 			}
 			
-//			while(sum<process[i].getBurstTime())
-//			{
-//				sum++;
-//				System.out.println("here");
-//			}
-//			sum=sum+process[i].getBurstTime();
-//			process[i].setCompletionTime(sum);
 		}
 	}
-	public void calculations(Process[]process) //mmken nb2a n2asem kol hesba fe method
+	public void calculations(Process[]process) //calculating the waiting and turn around time of each process
 	{  
 		double avgW=0;
 		double avgT=0;
@@ -59,8 +47,7 @@ public class FirstComeFirstServe {
 		{
 			process[i].setTurnAroundTime((process[i].getCompletionTime())-(process[i].getArrivalTime()));
 			process[i].setWaitingTime((process[i].getTurnAroundTime())-(process[i].getBurstTime()));
-			/*System.out.println("\nprocess :"+process[i].getProcessID()+"arrival  time is "+process[i].getArrivalTime()+"burst time is "+process[i].getBurstTime()+"waiting time is "+process[i].getWaitingTime()+"competion time is "+process[i].getCompletionTime()+"turn around time is "+process[i].getTurnAroundTime());*/
-			//System.out.println(process[i]);
+		
 			avgT+=process[i].getTurnAroundTime();
 			avgW+=process[i].getWaitingTime();
 		}
@@ -75,7 +62,7 @@ public class FirstComeFirstServe {
 					"\t"+process[i].getTurnAroundTime()+" \t"+process[i].getWaitingTime());
 		}
 		
-		System.out.println("\nAverage waiting time: "+ (avgW/process.length));     // printing average waiting time.
+		System.out.println("\nAverage waiting time: "+ (avgW/process.length));  // printing average waiting time.
 		System.out.println("Average turnaround time:"+(avgT/process.length)); 
 	}
 	

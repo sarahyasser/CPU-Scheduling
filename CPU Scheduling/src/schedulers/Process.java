@@ -7,19 +7,32 @@ public class Process {
     public int waitingTime;
     public int completionTime;
     public int turnAroundTime;
-   // public int tempBurstTime;
     static int counter=0;
     public int remainingBurstTime;
+    public int remainingQuantumTime;
+    public int trial;
+
     public int t;
 	int priority;
+	int quantumTime;
     
     Process(int processID,int arrivalTime,int burstTime )
     {
     	this.processID="p"+processID;
     	this.arrivalTime=arrivalTime;
     	this.burstTime=burstTime;
-    	//this.tempBurstTime=burstTime;
+    	this.remainingBurstTime=burstTime;
         counter++;
+    	
+    }
+    Process(int processID,int arrivalTime,int burstTime,int quantumTime,int priority )
+    {
+    	this.processID="p"+processID;
+    	this.arrivalTime=arrivalTime;
+    	this.burstTime=burstTime;
+    	this.quantumTime=quantumTime;
+    	this.priority=priority;
+        //counter++;
     	
     }
     public String getProcessID() {
@@ -80,6 +93,25 @@ public class Process {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	public int getRemainingBurstTime() {
+		return remainingBurstTime;
+	}
+	public void setRemainingBurstTime(int remainingBurstTime) {
+		this.remainingBurstTime = remainingBurstTime;
+	}
+	public int getRemainingQuantumTime() {
+		return remainingQuantumTime;
+	}
+	public void setRemainingQuantumTime(int remainingQuantumTime) {
+		this.remainingQuantumTime = remainingQuantumTime;
+	}
+	public int getQuantumTime() {
+		return quantumTime;
+	}
+	public void setQuantumTime(int quantumTime) {
+		this.quantumTime = quantumTime;
+	}
+
 
 
 	

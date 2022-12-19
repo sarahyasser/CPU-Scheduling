@@ -32,7 +32,8 @@ public class main {
 		System.out.println("2-SJF");
 		System.out.println("3-RR");
 		System.out.println("4-Priority (With Aging)");
-		System.out.println("5-EXIT");
+		System.out.println("5-AG Scheduling");
+		System.out.println("6-EXIT");
 		System.out.println("* * * * * * * * * * * * * * * * * * ");
 		
 		System.out.println("Enter your choice: ");
@@ -53,7 +54,7 @@ public class main {
 			System.out.println("Enter the context time:");
 			int c=scan.nextInt();
 			ShortestJobFirst SJF=new ShortestJobFirst(c);
-			SJF.findWaitingTime(process);
+			SJF.completionTime(process);
 			//SJF.sjf(process);
 			break;
 			
@@ -73,6 +74,23 @@ public class main {
 			}
 			Priority pr= new Priority();
 			pr.sortProcessWithAging(process, num);
+			break;
+			
+		case"5":
+			for (int i = 0; i < process.length; i++) {
+				System.out.println("Enter process " + (i+1) + "'s quantum time: ");
+				int quantumAG = scan.nextInt();
+				process[i].quantumTime = quantumAG;
+				
+				System.out.println("Enter process " + (i+1) + "'s Priority: ");
+				int priority = scan.nextInt();
+				process[i].setPriority(priority);
+			}
+			
+			AG_Scheduling ag = new AG_Scheduling(process);
+			ag.schedule();
+			break;
+			
 			
 			
 		}
