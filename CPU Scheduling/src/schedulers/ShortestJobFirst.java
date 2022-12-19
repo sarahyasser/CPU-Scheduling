@@ -2,7 +2,6 @@ package schedulers;
 
 import java.util.ArrayList;
 
-//import trial.Process;
 
 public class ShortestJobFirst 
 {
@@ -16,7 +15,7 @@ public class ShortestJobFirst
 		this.contextTime=contextTime;
 	}
 
-	void findWaitingTime(Process process[])
+	void completionTime(Process process[])
 	{
 		for(int i=0;i<process.length;i++)
 		{
@@ -26,9 +25,7 @@ public class ShortestJobFirst
 		int timer = 0;
 		int min = Integer.MAX_VALUE;
 		int shortest = 0;
-		int finish_time;
 		int counter=0;
-		Process temp;
 		boolean found = false;
 		
 		while(completedProcesses<process.length)
@@ -55,8 +52,8 @@ public class ShortestJobFirst
 			{
 				min = Integer.MAX_VALUE;
 				completedProcesses++;//incrementing the completed processes
-				finish_time = timer + 1;
-				process[shortest].completionTime=finish_time;
+				process[shortest].completionTime= timer + 1;
+	
 					
 			}
 			if(counter==1)
@@ -87,8 +84,11 @@ public class ShortestJobFirst
 	
 		public void print(Process process[])
 		{
-			System.out.println(gantt);
-			System.out.println("\npid  arrival  burst  complete turn  waiting");
+			System.out.println();
+			System.out.println("Gantt Chart: "+gantt);
+			System.out.println();
+
+			System.out.println("\npid  arrival  burst  complete turna  waiting");
 			for(int i=0;i<process.length;i++)
 			{
 				System.out.println(process[i].getProcessID()+" \t "+process[i].getArrivalTime()+" \t"+process[i].getBurstTime()+" \t"+process[i].getCompletionTime()+
@@ -98,7 +98,5 @@ public class ShortestJobFirst
 			System.out.println("\nAverage waiting time: "+ (avgW/process.length));     // printing average waiting time.
 			System.out.println("Average turnaround time:"+(avgT/process.length)); 
 		}
+		
 }
-
-
-

@@ -2,7 +2,6 @@ package schedulers;
 
 import java.util.Scanner;
 
-
 //import Process.Process;
 
 public class main {
@@ -55,7 +54,7 @@ public class main {
 			System.out.println("Enter the context time:");
 			int c=scan.nextInt();
 			ShortestJobFirst SJF=new ShortestJobFirst(c);
-			SJF.findWaitingTime(process);
+			SJF.completionTime(process);
 			//SJF.sjf(process);
 			break;
 			
@@ -89,7 +88,6 @@ public class main {
 			}
 			
 			AG_Scheduling ag = new AG_Scheduling(process);
-		
 			ag.schedule();
 			break;
 			

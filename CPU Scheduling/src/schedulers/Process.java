@@ -10,37 +10,9 @@ public class Process {
     static int counter=0;
     public int remainingBurstTime;
     public int remainingQuantumTime;
-    public boolean done;
-    public Process(String name, int arrivalTime, int burstTime, int priority, int quantumTime){
-        this.processID = name;
-        this.arrivalTime = arrivalTime;
-        this.burstTime = burstTime;
-        this.remainingBurstTime = burstTime;
-        this.priority = priority;
-        this.quantumTime = quantumTime;
-        this.remainingQuantumTime = quantumTime;
-        turnAroundTime = 0;
-        waitingTime = 0;
-    }
-    public int getRemainingBurstTime() {
-		return remainingBurstTime;
-	}
-	public void setRemainingBurstTime(int remainingBurstTime) {
-		this.remainingBurstTime = remainingBurstTime;
-	}
-	public int getRemainingQuantumTime() {
-		return remainingQuantumTime;
-	}
-	public void setRemainingQuantumTime(int remainingQuantumTime) {
-		this.remainingQuantumTime = remainingQuantumTime;
-	}
-	public int getQuantumTime() {
-		return quantumTime;
-	}
-	public void setQuantumTime(int quantumTime) {
-		this.quantumTime = quantumTime;
-	}
-	public int t;
+    public int trial;
+
+    public int t;
 	int priority;
 	int quantumTime;
     
@@ -49,8 +21,18 @@ public class Process {
     	this.processID="p"+processID;
     	this.arrivalTime=arrivalTime;
     	this.burstTime=burstTime;
+    	this.remainingBurstTime=burstTime;
         counter++;
-        
+    	
+    }
+    Process(int processID,int arrivalTime,int burstTime,int quantumTime,int priority )
+    {
+    	this.processID="p"+processID;
+    	this.arrivalTime=arrivalTime;
+    	this.burstTime=burstTime;
+    	this.quantumTime=quantumTime;
+    	this.priority=priority;
+        //counter++;
     	
     }
     public String getProcessID() {
@@ -111,6 +93,25 @@ public class Process {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	public int getRemainingBurstTime() {
+		return remainingBurstTime;
+	}
+	public void setRemainingBurstTime(int remainingBurstTime) {
+		this.remainingBurstTime = remainingBurstTime;
+	}
+	public int getRemainingQuantumTime() {
+		return remainingQuantumTime;
+	}
+	public void setRemainingQuantumTime(int remainingQuantumTime) {
+		this.remainingQuantumTime = remainingQuantumTime;
+	}
+	public int getQuantumTime() {
+		return quantumTime;
+	}
+	public void setQuantumTime(int quantumTime) {
+		this.quantumTime = quantumTime;
+	}
+
 
 
 	

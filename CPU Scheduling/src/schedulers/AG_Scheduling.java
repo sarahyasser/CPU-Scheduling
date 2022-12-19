@@ -6,18 +6,19 @@ import java.util.ArrayList;
 
 public class AG_Scheduling 
 {
-    //ArrayList<Process> processes = new ArrayList<>();
+
     ArrayList<Process> ready = new ArrayList<>();
     ArrayList<String> grantChart = new ArrayList<>();
     Process[] process;
+    Process tempProcess = null;
+    Process currentProcess = null;
+    int completeProcesses=0; //no of completed Processes
     double avgW=0,avgT=0;
     int smallest=0;
     int timer=0;
-    int completeProcesses=0;
-    int casee = 0;
-    int min= 0;  // to get the ndex of process with min priority 
-    Process tempProcess = null;
-    Process currentProcess = null;
+    int casee = 0; //to decide which scenario
+    int min= 0;  // to get the index of process with min priority 
+    
     
     public AG_Scheduling(Process[] process) {
         this.process = process;
@@ -75,15 +76,19 @@ public class AG_Scheduling
         }
         int quarter = Math.min(currentProcess.getRemainingBurstTime(), (int) Math.ceil(currentProcess.getQuantumTime()*0.25));
         printQuarter();
-        currentProcess.remainingQuantumTime=   currentProcess.getRemainingQuantumTime() - quarter;
-        currentProcess.remainingBurstTime=   currentProcess.getRemainingBurstTime() - quarter;
+        currentProcess.remainingQuantumTime=currentProcess.getRemainingQuantumTime() - quarter;
+        currentProcess.remainingBurstTime=currentProcess.getRemainingBurstTime() - quarter;
+        if(currentProcess.remainingBurstTime==0&&currentProcess.remainingQuantumTime==0)
+        {
+              uncompleteProcess();
+        }
         timer += quarter;
         grantChart.add(currentProcess.getProcessID());
        
     }
     
     
-    public void checkArrival()
+    public void checkArrival() //to check the arrival of the process
     {
     	 while (smallest < process.length && process[smallest].getArrivalTime() <= timer) {
              ready.add(process[smallest]);
@@ -96,7 +101,7 @@ public class AG_Scheduling
     	
     }
     
-    public void checkPriority()
+    public void checkPriority() //to check the arrival of the priority
     {
         for (int i = 0; i < ready.size(); i++) {
             if (ready.get(i).getPriority() < currentProcess.getPriority()) {
@@ -109,9 +114,10 @@ public class AG_Scheduling
     public void SJF()
     {
     	
-        for (int i = 0; i < ready.size(); i++) 
+        for (int i = 0; i < ready.size(); i++) //to bring the process with smallest burst time
         {
-            if (ready.get(i).getRemainingBurstTime() < currentProcess.getRemainingBurstTime()) {
+            if (ready.get(i).getRemainingBurstTime() < currentProcess.getRemainingBurstTime())
+            {
                 currentProcess = ready.get(i);
                 min = i;
             }
@@ -119,7 +125,7 @@ public class AG_Scheduling
     
     
     }
-    public void calculations()
+    public void calculations() //to calculate the waiting time and turn around time
     {
     	 for(int i=0;i<process.length;i++)
          {
@@ -129,17 +135,17 @@ public class AG_Scheduling
     		 avgW+=process[i].waitingTime;
          }
     }
-    public void print()
+    public void print() //print the info the process
     {
     	
     	System.out.println("\n");
         System.out.println("Gantt Chart:"+grantChart);
-        System.out.println("\npid  arrival  burst  completion  turn  waiting  quantum  "); // shut up // most7el
+        System.out.println("\npid  arrival  burst  completion  turna  waiting  "); 
         for(int i=0;i<process.length;i++)
         {
         	
             System.out.println(process[i].getProcessID()+" \t "+process[i].getArrivalTime()+" \t"+process[i].getBurstTime()+" \t"+process[i].getCompletionTime()+
-                    " \t  "+process[i].getTurnAroundTime()+"  \t "+process[i].getWaitingTime()+"  \t "+process[i].quantumTime);
+                    " \t  "+process[i].getTurnAroundTime()+"  \t "+process[i].getWaitingTime());
         }
         System.out.println("\nAverage waiting time: "+ (avgW/process.length));     // printing average waiting time.
 		System.out.println("Average turnaround time:"+(avgT/process.length)); 
@@ -164,7 +170,8 @@ public class AG_Scheduling
         }
 
     }
-    public void completeProcess()
+    
+    public void completeProcess() //if a running process didn’t use all of its quantum time because it’s no longer need that time and the job was completed
     {
     	currentProcess.quantumTime=0;
         currentProcess.remainingQuantumTime=0;
@@ -174,21 +181,26 @@ public class AG_Scheduling
         currentProcess = null;
         casee=0;
     }
+    public void uncompleteProcess() //if a running process used all of its quantum time and still have the job to do
+    {   
+    	currentProcess.quantumTime+=2;
+    	currentProcess.remainingQuantumTime+=2;
+    	tempProcess = currentProcess;
+    	ready.add(tempProcess); 
+        currentProcess = null;
+        casee=0;
+        
+    }
     public void schedule()
     {
     	
-        while (completeProcesses < process.length)
+        while (completeProcesses < process.length) //until all processes are completed
         {
-        	while (smallest < process.length && process[smallest].getArrivalTime() <= timer) {
-                ready.add(process[smallest]);
-                smallest++;
-            }
-            if(ready.isEmpty())
+        	checkArrival();
+        	
+            if (casee== 0)  
             {
-            	timer++;
-            }
-            if (casee== 0)
-            {
+            	
             	FCFS();
                 if (currentProcess.getRemainingBurstTime() == 0)
                 {
@@ -197,12 +209,14 @@ public class AG_Scheduling
                 }  
                 tempProcess = currentProcess;
                 casee = 1;
+               
                 
             }
-            else if (casee==1)
+            else if (casee==1) 
             {
             	checkPriority();
-            	 if (currentProcess!=tempProcess) {
+            	 if (currentProcess!=tempProcess)
+            	 {
             		 casee = 0;
                      tempProcess.quantumTime=tempProcess.getQuantumTime() + (int) Math.ceil(tempProcess.getRemainingQuantumTime() / 2.0);
                      tempProcess.remainingQuantumTime=   tempProcess.getQuantumTime();
@@ -210,20 +224,29 @@ public class AG_Scheduling
                      ready.add(tempProcess);
                      continue;
                  }
-                 int half = (int) Math.ceil(currentProcess.getQuantumTime() / 2.0);
-                 int spent = Math.min(currentProcess.getRemainingBurstTime(), half - (currentProcess.getQuantumTime() - currentProcess.getRemainingQuantumTime()));
+                 int half = (int) Math.ceil(currentProcess.getQuantumTime() / 2.0); //the half of the quantum
+                 int time = Math.min(currentProcess.getRemainingBurstTime(), half - (currentProcess.getQuantumTime() - currentProcess.getRemainingQuantumTime()));
                  printHalf(half);
-                 currentProcess.remainingQuantumTime=  currentProcess.getRemainingQuantumTime() - spent;
-                 currentProcess.remainingBurstTime=  currentProcess.getRemainingBurstTime() - spent;
-                 timer+= spent;
+                 
+                
+                 currentProcess.remainingQuantumTime=  currentProcess.getRemainingQuantumTime() - time;
+                 currentProcess.remainingBurstTime=  currentProcess.getRemainingBurstTime() - time;
+                 timer+= time;
                  
                  if (currentProcess.getBurstTime() == 0)
                  {
                      completeProcess();
                      continue;
                  }  
+                 if(currentProcess.remainingBurstTime==0&&currentProcess.remainingQuantumTime==0)
+                 {
+                       uncompleteProcess();
+                 }
+                 
                  casee = 2;
                  tempProcess = currentProcess;
+                 
+                 
             }
             else 
             {
@@ -240,6 +263,11 @@ public class AG_Scheduling
                      continue;
    
             	 }
+            	 if(currentProcess.remainingBurstTime==0&&currentProcess.remainingQuantumTime==0)
+                 {
+                       uncompleteProcess();
+                 }
+            	 
             	   currentProcess.remainingQuantumTime=  currentProcess.getRemainingQuantumTime() - 1;
             	   currentProcess.remainingBurstTime=  currentProcess.getRemainingBurstTime() - 1;
                    timer++;
@@ -249,6 +277,10 @@ public class AG_Scheduling
                        continue;
                    }  
                    tempProcess = currentProcess;
+                   if(currentProcess.remainingBurstTime==0&&currentProcess.remainingQuantumTime==0)
+                   {
+                         uncompleteProcess();
+                   }
               
             }
         }

@@ -49,7 +49,10 @@ public class RoundRobin {
 		{
 			timer++;
 		}
-		ready.add(process[0]);
+		for(int i=0;i<process.length;i++)
+		{ if(process[i].arrivalTime==timer)
+			ready.add(process[i]);
+		}
 		while (true)
 		{
 			
@@ -119,8 +122,11 @@ public class RoundRobin {
 	}
 	
 	public void print()
-	{
-		System.out.println(ganttChart);
+	{   
+		System.out.println();
+		System.out.println("Gantt Chart: "+ganttChart);
+		System.out.println();
+
 		System.out.println("\npid  arrival  burst  completion  turn  waiting");
 		for(int i=0;i<process.length;i++)
 		{

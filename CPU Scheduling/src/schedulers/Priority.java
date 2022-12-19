@@ -2,13 +2,14 @@ package schedulers;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;import javax.swing.tree.DefaultTreeCellEditor;
+import java.util.Comparator;
 public class Priority {
 	
 	
 	private ArrayList<Process> processList = new ArrayList<Process>();
 	private ArrayList<Process> completed = new ArrayList<Process>();
 	private ArrayList<Process> sequence = new ArrayList<Process>();
+	ArrayList<String> gantt=new ArrayList<String>();
 	private double cummWait = 0.0;
 	private double cummTurn = 0.0;
 	
@@ -16,33 +17,14 @@ public class Priority {
 	    @Override
 	    
 	    public int compare(Process p1, Process p2) {
-	        Integer i1 = new Integer(p1.getArrivalTime());
-	        Integer i2 = new Integer(p2.getArrivalTime());
+	       
+			Integer i1 = new Integer(p1.getArrivalTime());
+				//	Integer(p1.getArrivalTime());
+	      
+			Integer i2 = new Integer(p2.getArrivalTime());
 	        return i1.compareTo(i2);    
 	    }
 	};
-	
-	public void PrintCalculations()
-	{
-
-		System.out.println("\n\nWaiting Times and Turnaround Times:");
-		for(int i = 0; i < completed.size(); i++)
-		{
-			int wTime = completed.get(i).waitingTime;
-			int taTime = wTime + completed.get(i).getBurstTime();
-			cummWait += wTime;
-			cummTurn += taTime;
-			System.out.println("\nProcess " + completed.get(i).getProcessID() + " stats: ");
-            System.out.println("Waiting time: " + wTime);
-            System.out.println("Turnaround time: " + taTime);
-		}
-		System.out.println("\n\nAverage waiting time: ");
-		System.out.println(cummWait/(double)completed.size());
-		
-		System.out.println("\n\nAverage turnaround time: ");
-		System.out.println(cummTurn/(double)completed.size());
-	}
-	
 	
 	public void sortProcessWithAging(Process [] process,int numOfProcess)
 	{
@@ -64,10 +46,10 @@ public class Priority {
 				Process p = processList.get(i);
 				if(time>= p.getArrivalTime())
 				{
-					if(p.getPriority()<executing.getPriority())
+					if(p.getPriority()<executing.getPriority()) //solving starvation problem (with aging)
 					{
 						executing.setWaitingTime(executing.getWaitingTime()+1);
-						if(executing.getWaitingTime() %5 ==0)
+						if(executing.getWaitingTime() %5 ==0) //if the waiting time of current process increases ,it gets a higher priority
 						{
 							executing.setPriority(executing.getPriority()-1);
 						}
@@ -77,7 +59,7 @@ public class Priority {
 					else 
 					{
 						p.setWaitingTime(p.getWaitingTime()+1);
-						if(p.getWaitingTime() %5 ==0)
+						if(p.getWaitingTime() %5 ==0)//if the waiting time of another process increases ,it gets a higher priority
 						{
 							p.setPriority(p.getPriority()-1);
 						}
@@ -89,10 +71,12 @@ public class Priority {
 			if(time >=executing.getArrivalTime())
 			{
 				sequence.add(executing);
+				gantt.add(executing.processID);
 				executing.remainingBurstTime=executing.remainingBurstTime-1;
 				if(executing.remainingBurstTime==0)
 				{
 					completed.add(processList.get(index));
+					
 					processList.remove(index);
 					numOfProcess--;
 				}
@@ -100,14 +84,29 @@ public class Priority {
 			time++;
 		}
 		while(numOfProcess>0);
-		System.out.println("\nExecution Timeline:\n");
-		for(int i = 0; i < sequence.size(); i++)
-		{
-			System.out.println("Process: " + sequence.get(i).getProcessID() + " ||| Time: " + (initalTime+i));
-            System.out.println("-------------------------------------");
-		}
-		PrintCalculations();
 		
+		print(completed);
+		
+	}
+	public void print(ArrayList<Process> arr)
+	{
+		System.out.println();
+		System.out.println("Gantt Chart: "+gantt);
+		System.out.println();
+		
+		System.out.println("\npid  arrival  burst  turna  waiting");
+		for(int i = 0; i < completed.size(); i++)
+		{
+			int wTime = completed.get(i).waitingTime;
+			int taTime = wTime + completed.get(i).getBurstTime();
+			cummWait += wTime;
+			cummTurn += taTime;
+			System.out.println(completed.get(i).getProcessID()+" \t "+completed.get(i).getArrivalTime()+" \t"+completed.get(i).getBurstTime()+
+					"\t"+taTime+" \t"+wTime);
+		}
+		
+		System.out.println("\nAverage waiting time: "+ (cummWait/(double)completed.size()));     // printing average waiting time.
+		System.out.println("Average turnaround time:"+(cummTurn/(double)completed.size())); 
 	}
 	
 	
