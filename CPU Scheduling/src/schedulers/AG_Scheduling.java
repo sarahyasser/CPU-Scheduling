@@ -70,6 +70,7 @@ public class AG_Scheduling
     
     public void FCFS()
     {
+    	
         if(currentProcess==null)
         {
         	currentProcess= ready.remove(0);
@@ -78,10 +79,6 @@ public class AG_Scheduling
         printQuarter();
         currentProcess.remainingQuantumTime=currentProcess.getRemainingQuantumTime() - quarter;
         currentProcess.remainingBurstTime=currentProcess.getRemainingBurstTime() - quarter;
-        if(currentProcess.remainingBurstTime==0&&currentProcess.remainingQuantumTime==0)
-        {
-              uncompleteProcess();
-        }
         timer += quarter;
         grantChart.add(currentProcess.getProcessID());
        
@@ -113,14 +110,16 @@ public class AG_Scheduling
     
     public void SJF()
     {
-    	
+    
         for (int i = 0; i < ready.size(); i++) //to bring the process with smallest burst time
         {
             if (ready.get(i).getRemainingBurstTime() < currentProcess.getRemainingBurstTime())
             {
                 currentProcess = ready.get(i);
                 min = i;
+                
             }
+            
         }
     
     
@@ -140,12 +139,12 @@ public class AG_Scheduling
     	
     	System.out.println("\n");
         System.out.println("Gantt Chart:"+grantChart);
-        System.out.println("\npid  arrival  burst  completion  turna  waiting  "); 
+        System.out.println("\npid  arrival  burst  completion  turn   waiting    quantum "); 
         for(int i=0;i<process.length;i++)
         {
         	
             System.out.println(process[i].getProcessID()+" \t "+process[i].getArrivalTime()+" \t"+process[i].getBurstTime()+" \t"+process[i].getCompletionTime()+
-                    " \t  "+process[i].getTurnAroundTime()+"  \t "+process[i].getWaitingTime());
+                    " \t  "+process[i].getTurnAroundTime()+"  \t "+process[i].getWaitingTime()+"\t  "+process[i].getQuantumTime());
         }
         System.out.println("\nAverage waiting time: "+ (avgW/process.length));     // printing average waiting time.
 		System.out.println("Average turnaround time:"+(avgT/process.length)); 
@@ -171,8 +170,9 @@ public class AG_Scheduling
 
     }
     
-    public void completeProcess() //if a running process didn’t use all of its quantum time because it’s no longer need that time and the job was completed
+    public void completeProcess() //if a running process didnt use all of its quantum time because it’s no longer need that time and the job was completed
     {
+ 
     	currentProcess.quantumTime=0;
         currentProcess.remainingQuantumTime=0;
         currentProcess.completionTime=timer;
@@ -186,7 +186,7 @@ public class AG_Scheduling
     	currentProcess.quantumTime+=2;
     	currentProcess.remainingQuantumTime+=2;
     	tempProcess = currentProcess;
-    	ready.add(tempProcess); 
+    	ready.add(currentProcess); 
         currentProcess = null;
         casee=0;
         
@@ -196,17 +196,19 @@ public class AG_Scheduling
     	
         while (completeProcesses < process.length) //until all processes are completed
         {
+     
         	checkArrival();
         	
             if (casee== 0)  
             {
-            	
+
             	FCFS();
                 if (currentProcess.getRemainingBurstTime() == 0)
                 {
                     completeProcess();
                     continue;
                 }  
+
                 tempProcess = currentProcess;
                 casee = 1;
                
@@ -238,9 +240,10 @@ public class AG_Scheduling
                      completeProcess();
                      continue;
                  }  
-                 if(currentProcess.remainingBurstTime==0&&currentProcess.remainingQuantumTime==0)
+                 if(currentProcess.remainingBurstTime>0&&currentProcess.remainingQuantumTime==0)
                  {
                        uncompleteProcess();
+                       continue;
                  }
                  
                  casee = 2;
@@ -259,28 +262,45 @@ public class AG_Scheduling
                      tempProcess.remainingQuantumTime=   tempProcess.getQuantumTime();
                      ready.remove(min);
                      ready.add(tempProcess);
-                
                      continue;
    
             	 }
-            	 if(currentProcess.remainingBurstTime==0&&currentProcess.remainingQuantumTime==0)
+            	 if(currentProcess.remainingBurstTime>0&&currentProcess.remainingQuantumTime==0)
                  {
+              	   	  
                        uncompleteProcess();
+                       continue;
                  }
-            	 
-            	   currentProcess.remainingQuantumTime=  currentProcess.getRemainingQuantumTime() - 1;
-            	   currentProcess.remainingBurstTime=  currentProcess.getRemainingBurstTime() - 1;
-                   timer++;
+            	
+
+            	 int bound=currentProcess.remainingBurstTime;
+            	   for(int i=0;i<bound;i++)
+            	   {
+            		   currentProcess.remainingQuantumTime=  currentProcess.getRemainingQuantumTime() - 1;
+                	   currentProcess.remainingBurstTime=  currentProcess.getRemainingBurstTime() - 1;
+                	   timer++;
+            	   }
+                   
                    if (currentProcess.getRemainingBurstTime() == 0)
                    {
                        completeProcess();
                        continue;
-                   }  
-                   tempProcess = currentProcess;
-                   if(currentProcess.remainingBurstTime==0&&currentProcess.remainingQuantumTime==0)
-                   {
-                         uncompleteProcess();
-                   }
+                   } 
+                   
+                   
+                   
+                   
+                   
+                   
+//            	   currentProcess.remainingQuantumTime=  currentProcess.getRemainingQuantumTime() - 1;
+//            	   currentProcess.remainingBurstTime=  currentProcess.getRemainingBurstTime() - 1;
+//            	   timer++;
+//                 ready.add(currentProcess);
+//                 tempProcess = currentProcess;
+//                 currentProcess=null;
+//                 casee=0;
+                   
+                   
               
             }
         }

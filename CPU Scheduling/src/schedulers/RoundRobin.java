@@ -50,7 +50,8 @@ public class RoundRobin {
 			timer++;
 		}
 		for(int i=0;i<process.length;i++)
-		{ if(process[i].arrivalTime==timer)
+		{
+			if(process[i].arrivalTime==timer)
 			ready.add(process[i]);
 		}
 		while (true)
